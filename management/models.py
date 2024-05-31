@@ -43,3 +43,12 @@ class Geolocation(models.Model):
 
     class Meta:
         ordering = ['-date_time']
+
+
+class Coordinates(models.Model):
+    section = models.CharField(max_length=50)
+    lat = models.FloatField()
+    long = models.FloatField()
+    point = models.IntegerField()
+
+

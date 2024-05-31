@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Trees, Section, Lot, Geolocation
+from .models import Trees, Section, Lot, Geolocation, PlantedStatus, Coordinates
 
 
 class TreesSerializer(ModelSerializer):
@@ -23,4 +23,16 @@ class LotSerializer(ModelSerializer):
 class GeolocationSerializer(ModelSerializer):
     class Meta:
         model = Geolocation
+        fields = '__all__'
+
+
+class PlantedStatusSerializer(ModelSerializer):
+    class Meta:
+        model = PlantedStatus
+        fields = '__all__'
+
+
+class CoordinatesSerializer(ModelSerializer):
+    class Meta:
+        model = Coordinates
         fields = '__all__'

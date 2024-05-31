@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <section class="trees-utmost-container-section">
+        <div class="trees-header-title-div">
+            Trees
+        </div>
+        <div class="trees-container-div">
+            {% for tree in trees %}
+                <div class="trees-tree-div">
+                    <div class="trees-tree-name-div">
+                        {{ tree.name }}
+                    </div>
+                    <div class="trees-toggle-edit-btn" id="trees-toggle-edit-form{{ tree.id }}">
+                        +
+                    </div>
+                    <div class="trees-form-container" id="trees-form-container{{ tree.id }}">
+                        <form method="POST" name="edited-tree-name" action="{% url 'edit-tree' tree.name %}">
+                            {% csrf_token %}
+                            <input class="trees-edit-input-field"
+                                   value="{{ tree.name }}"
+                                   name='tree-edited-name'
+                                   type="text">
+                            <div>
+                                <button type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButtons = document.querySelectorAll('.trees-toggle-edit-btn');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const bookId = button.id.replace('trees-toggle-edit-form', '');
+                    const bookDetailsElement = document.getElementById(`trees-form-container${bookId}`);
+
+                    // Toggle the 'details-visible' class to trigger the transition
+                    bookDetailsElement.classList.toggle('details-visible');
+
+                    // Update the button text based on the visibility state
+                    button.innerHTML = bookDetailsElement.classList.contains('details-visible') ? "-" : "+";
+
+                    // Handle other buttons
+                    toggleButtons.forEach(otherButton => {
+                        if (otherButton !== button) {
+                            otherButton.innerHTML = "+";
+                            const otherBookId = otherButton.id.replace('trees-toggle-edit-form', '');
+                            const otherBookDetailsElement = document.getElementById(`trees-form-container${otherBookId}`);
+                            otherBookDetailsElement.classList.remove('details-visible');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

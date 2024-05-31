@@ -1,0 +1,49 @@
+.trees-header-title-div{
+    font-family: 'Montserrat';
+    text-align: center;
+    margin: 40px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: rgb(70, 70, 70);
+    font-size: 40px;
+}
+
+.trees-container-div{
+    text-align: center;
+    margin: 20px;
+}
+
+.trees-tree-div{
+    display: inline-block;
+    background-color: rgb(100, 150, 150);
+    color: beige;
+    height: 50px;
+    width: 140px;
+    margin: 20px;
+    border-radius: 5px;
+    vertical-align: top;
+}
+
+.trees-tree-name-div{
+    margin-top: 13px;
+    font-family: 'Montserrat';
+}
+
+.trees-form-container{
+    transition: 0.5s all ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.trees-edit-input-field{
+    margin:auto;
+    width: 90%;
+}
+
+.trees-toggle-edit-btn{
+    cursor: pointer;
+}
+
+.details-visible{
+    max-height: 1000px;
+}

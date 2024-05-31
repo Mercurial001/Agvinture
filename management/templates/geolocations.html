@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <section class="geolocations-utmost-container-section">
+        <div class="geolocations-utmost-title-header-div">
+            Geolocations
+        </div>
+        <div class="geolocation-filter-form-div">
+            <form class="geolocation-filter-form">
+                <select name="filter" id="geolocation-filter">
+                    <option value="date">Date</option>
+                    <option value="section">Section</option>
+                    <option value="lot">Lot</option>
+                </select>
+                <button class="geolocations-filter-btn" type="submit">Filter</button>
+            </form>
+        </div>
+        {% if if_section %}
+            {% for date, geolocations in geolocation_sections.items %}
+
+                <div class="geolocations-date-header-div">
+                    {{ date }}
+                </div>
+                {% for geolocation in geolocations %}
+                    <a class='geolocations-link-to-url' href="{% url 'geolocation-page' geolocation.id %}">
+                        <div class="geolocation-geolocation-instance-div">
+                            <div>
+                                <div class="geolocations-title-header-div">
+                                    {{ geolocation.tree }}
+                                </div>
+                                <div class="geolocations-title-header-div">
+                                    {{ geolocation.status }}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="geolocation-subtitle-header-div">
+                                    {{ geolocation.section }}
+                                </div>
+                                <div class="geolocation-subtitle-header-div">
+                                    {{ geolocation.lot }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endfor %}
+        {% elif if_lot %}
+            {% for date, geolocations in geolocation_lot.items %}
+                <div class="geolocations-date-header-div">
+                    {{ date }}
+                </div>
+                {% for geolocation in geolocations %}
+                    <a class='geolocations-link-to-url' href="{% url 'geolocation-page' geolocation.id %}">
+                        <div class="geolocation-geolocation-instance-div">
+                            <div>
+                                <div class="geolocations-title-header-div">
+                                    {{ geolocation.tree }}
+                                </div>
+                                <div class="geolocations-title-header-div">
+                                    {{ geolocation.status }}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="geolocation-subtitle-header-div">
+                                    {{ geolocation.section }}
+                                </div>
+                                <div class="geolocation-subtitle-header-div">
+                                    {{ geolocation.lot }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+            {% for date, geolocations in geolocation_dates.items %}
+                <div class="geolocations-date-header-div">
+                    {{ date }}
+                </div>
+                {% for geolocation in geolocations %}
+                <a class='geolocations-link-to-url' href="{% url 'geolocation-page' geolocation.id %}">
+                    <div class="geolocation-geolocation-instance-div">
+                        <div>
+                            <div class="geolocations-title-header-div">
+                                {{ geolocation.tree }}
+                            </div>
+                            <div class="geolocations-title-header-div">
+                                {{ geolocation.status }}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="geolocation-subtitle-header-div">
+                                {{ geolocation.section }}
+                            </div>
+                            <div class="geolocation-subtitle-header-div">
+                                {{ geolocation.lot }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+<!--        <div class="geolocations-container-div">-->
+<!--            {% for geolocation in geolocation_objects %}-->
+<!--                <div class="geolocations-geolocation-div">-->
+<!--                    <div>-->
+<!--                        {% if geolocation.image %}-->
+<!--                            <div>-->
+<!--                                <img class="geolocations-geolocation-img"-->
+<!--                                     src="{{ geolocation.image.url }}">-->
+<!--                            </div>-->
+<!--                        {% else %}-->
+<!--                            no image-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                    <div class="geolocations-geolocation-details">-->
+<!--                        <div class="geolocations-geolocation-detail" id="geolocations-geolocation-tree-name">-->
+<!--                            {{ geolocation.tree }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail" id="geolocations-geolocation-date-time">-->
+<!--                            {{ geolocation.date_time }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail">-->
+<!--                            Latitude: {{ geolocation.lat }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail">-->
+<!--                            Longitude: {{ geolocation.long }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail">-->
+<!--                            {{ geolocation.status }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail">-->
+<!--                            {{ geolocation.section }}-->
+<!--                        </div>-->
+<!--                        <div class="geolocations-geolocation-detail">-->
+<!--                            {{ geolocation.lot }}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            {% empty %}-->
+<!--                <div>-->
+<!--                    No Geolocation in this Lot and Section-->
+<!--                </div>-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+    </section>
+{% endblock %}

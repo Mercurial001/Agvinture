@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    {% for section, lots in lots_section.items %}
+        <div>
+            {{ section }}
+        </div>
+        {% for lot in lots %}
+            <div>
+                - {{ lot.name }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

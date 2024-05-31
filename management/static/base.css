@@ -1,0 +1,111 @@
+body{
+    margin: 0;
+}
+
+.base-header{
+    float: left;
+    width: 20%;
+    background-color:rgb(10, 40, 40);
+    height: 100vh;
+    color:beige;
+    position: fixed;
+    font-family: 'Montserrat';
+}
+
+.base-block-content-div{
+    float:right;
+    width:80%;
+}
+
+.base-unordered-list{
+    list-style:none;
+}
+
+.base-header-list-links{
+    margin: 10px;
+}
+
+.base-link-to-pages{
+    text-decoration: none;
+    color: beige;
+}
+
+.agvinture-geolocation-map{
+    margin: 20px;
+}
+
+.base-filter-options-div{
+    margin: auto;
+    text-align: left;
+    width: 60%;
+    margin-top: 30px;
+    margin-bottom:10px;
+}
+
+.base-agvinture-filters{
+    text-align: center;
+}
+
+.base-specific-filter-applied-div{
+    text-align: left;
+    font-family: 'Montserrat';
+    margin: auto;
+    width: 60%;
+}
+
+.base-composite-filters-div{
+    background-color: rgb(100, 150, 150);
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 27px;
+    width: 50%;
+    border-radius: 10px;
+    padding: 2px;
+    display: none;
+}
+
+.base-composite-geolocation-filter-select-div{
+    margin: 10px;
+    display: inline-block;
+}
+
+.base-composite-filters-div-show{
+    display: block;
+}
+
+.base-specific-filters-div-hide{
+    display: none;
+}
+
+.base-filter-option-div{
+    display: inline-block;
+}
+
+#specific-filter-btn-div{
+    display: none;
+}
+
+.specific-filter-btn-div-show{
+    display: block;
+}
+
+.multiple-filter-btn-div-hide{
+    display: none;
+}
+
+.base-specific-filter-form-div{
+    display: inline-block;
+    margin: 10px;
+    background-color: rgb(100, 150, 150);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.base-filter-form-btn{
+    background-color: rgb(200, 220, 220);
+    border: 1px solid rgb(10, 40, 40);
+    border-radius: 5px;
+    font-family: 'Montserrat';
+    cursor: pointer;
+    color: rgb(40, 40, 40);
+}

@@ -4,6 +4,11 @@ from .models import Lot
 from .models import Section
 from .models import Geolocation
 from .models import PlantedStatus
+from .models import Coordinates
+
+
+class CoordinatesAdmin(admin.ModelAdmin):
+    list_display = ('section', 'point', 'long', 'lat')
 
 
 class PlantedStatusAdmin(admin.ModelAdmin):
@@ -26,6 +31,7 @@ class GeolocationAdmin(admin.ModelAdmin):
     list_display = ('section', 'lot', 'tree', 'lat', 'long')
 
 
+admin.site.register(Coordinates, CoordinatesAdmin)
 admin.site.register(PlantedStatus, PlantedStatusAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Lot, LotAdmin)

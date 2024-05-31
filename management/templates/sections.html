@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <section class="sections-utmost-container-section">
+        <div class="sections-header-title-div">
+            Sections
+        </div>
+        <div class="sections-container-div">
+<!--            <div class="sections-add-section-form-container-div">-->
+<!--                <form method='POST' action="">-->
+<!--                    {% csrf_token %}-->
+<!--                    <div>-->
+<!--                        {{ add_section_form.as_p }}-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <button>Add Section</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+            {% for section, lots in lots_section.items %}
+                <div class="sections-section-div">
+                    <div class="sections-section-name">
+                        {{ section }}
+                    </div>
+                    <div class="sections-section-lot-container">
+                        <div class="sections-section-detail-container">
+                             {% for lot in lots %}
+                                <div class="sections-section-lot-div">
+                                    <a href="">{{ lot.name }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+{% endblock %}

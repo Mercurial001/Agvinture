@@ -5,8 +5,130 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{% static 'base.css' %}">
-</head>
+    <link rel="stylesheet" href="{% static 'trees.css' %}">
+    <link rel="stylesheet" href="{% static 'sections.css' %}">
+    <link rel="stylesheet" href="{% static 'geolocations.css' %}">
+    <link rel="stylesheet" href="{% static 'geolocation.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
 <body>
-    Hello
+    <header class="base-header">
+        <ul class="base-unordered-list">
+            <li class="base-header-list-links">
+                <a class="base-link-to-pages" href="{% url 'homepage' %}">Home</a>
+            </li>
+            <li class="base-header-list-links">
+                <a class="base-link-to-pages" href="{% url 'trees-page' %}">Trees</a>
+            </li>
+            <li class="base-header-list-links">
+                <a class="base-link-to-pages" href="{% url 'sections-page' %}">Sections</a>
+            </li>
+            <li class="base-header-list-links">
+                <a class="base-link-to-pages" href="{% url 'geolocations-page' %}">Geolocations</a>
+            </li>
+            <li class="base-header-list-links">
+                <a class="base-link-to-pages" href="{% url 'logout' %}">Logout</a>
+            </li>
+        </ul>
+    </header>
+    <div class="base-block-content-div">
+        {% block content %}
+            <div class="base-agvinture-filters">
+<!--                {{selected_specific_date}}-->
+<!--                {{selected_specific_section}}-->
+<!--                {{selected_specific_lot}}-->
+<!--                {{selected_composite_date}}-->
+<!--                {{selected_composite_section}}-->
+<!--                {{selected_composite_lot}}-->
+                <div class="base-filter-options-div">
+                    <form>
+                        <button class='base-filter-form-btn' type="button" id="toggle-filters-btn">
+                            Multiple Filters
+                        </button>
+                    </form>
+                </div>
+                <div class="base-specific-filter-applied-div">
+                    {% if selected_specific_date or selected_specific_section or selected_specific_lot %}
+                        Specific Filter Applied: {{ filter_applied }}
+                    {% endif %}
+                </div>
+                <div class="base-specific-filters-div">
+                    <div class="base-specific-filter-form-div">
+                        <form method="GET">
+                            <select name="geolocation-dates">
+                                {% for date in unique_dates %}
+                                    <option value="{{ date }}">{{ date }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class='base-filter-form-btn' type="submit">Filter</button>
+                        </form>
+                    </div>
+                    <div class="base-specific-filter-form-div">
+                        <form method="GET">
+                            <select name="geolocation-section">
+                                {% for section in section_objects %}
+                                    <option value="{{ section.id }}">{{ section.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class='base-filter-form-btn' type="submit">Filter</button>
+                        </form>
+                    </div>
+                    <div class="base-specific-filter-form-div">
+                        <form method="GET">
+                            <select name="geolocation-lot">
+                                {% for lot in lot_objects %}
+                                    <option value="{{ lot.id }}">{{ lot.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class='base-filter-form-btn' type="submit">Filter</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="base-composite-filters-div">
+                    <form method="GET">
+                        <div class="base-composite-geolocation-filter-select-div">
+                            <select name="geolocation-dates-composite">
+                                {% for date in unique_dates %}
+                                    <option value="{{ date }}">{{ date }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="base-composite-geolocation-filter-select-div">
+                            <select name="geolocation-section-composite">
+                                {% for section in section_objects %}
+                                    <option value="{{ section.id }}">{{ section.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="base-composite-geolocation-filter-select-div">
+                            <select name="geolocation-lot-composite">
+                                {% for lot in lot_objects %}
+                                    <option value="{{ lot.id }}">{{ lot.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class='base-filter-form-btn' type="submit">Filter</button>
+                    </form>
+                </div>
+            </div>
+            <div class="agvinture-geolocation-map">
+                {{ coordinates_html_map|safe }}
+            </div>
+        {% endblock %}
+    </div>
+    <script>
+        const toggleFiltersBtn = document.querySelector('#toggle-filters-btn');
+
+        const specificFiltersDiv = document.querySelector('.base-specific-filters-div');
+        const specificMultipleDiv = document.querySelector('.base-composite-filters-div');
+
+        toggleFiltersBtn.addEventListener('click', () =>{
+            specificMultipleDiv.classList.toggle('base-composite-filters-div-show');
+            specificFiltersDiv.classList.toggle('base-specific-filters-div-hide');
+
+            const isShowingFilters = specificMultipleDiv.classList.contains('base-composite-filters-div-show');
+            toggleFiltersBtn.textContent = isShowingFilters ? 'Specific Filters' : 'Multiple Filters';
+        });
+    </script>
 </body>
 </html>
