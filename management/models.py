@@ -52,3 +52,20 @@ class Coordinates(models.Model):
     point = models.IntegerField()
 
 
+class RegisteringDevice(models.Model):
+    device_name = models.CharField(max_length=100)
+    device_uuid = models.CharField(max_length=100, unique=True)
+    date = models.DateField()
+    date_time = models.DateTimeField()
+    is_registered = models.BooleanField(default=False)
+
+
+class RegisteredDevice(models.Model):
+    device_name = models.CharField(max_length=100)
+    device_uuid = models.CharField(max_length=100, unique=True)
+    is_registered = models.BooleanField(default=True)
+    date = models.DateField()
+    date_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.device_name

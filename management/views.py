@@ -3,8 +3,9 @@ from django.http import StreamingHttpResponse, JsonResponse, HttpResponseRedirec
     HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Trees, Section, Lot, Geolocation, PlantedStatus, Coordinates
-from .serializers import TreesSerializer, LotSerializer, SectionSerializer, GeolocationSerializer, PlantedStatusSerializer, CoordinatesSerializer
+from .models import Trees, Section, Lot, Geolocation, PlantedStatus, Coordinates, RegisteringDevice, RegisteredDevice
+from .serializers import TreesSerializer, LotSerializer, SectionSerializer, GeolocationSerializer,\
+    PlantedStatusSerializer, CoordinatesSerializer
 from django.utils import timezone
 import folium
 from django.db import models
@@ -18,6 +19,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .decorators import authenticated_user
 from django.contrib.auth.decorators import login_required
+from openpyxl import Workbook
 
 
 @login_required(login_url='login')
@@ -410,6 +412,7 @@ def geolocations(request):
     geolocation_filter = request.GET.get('filter')
     if_section = geolocation_filter == 'section'
     if_lot = geolocation_filter == 'lot'
+    if_date = geolocation_filter == 'date'
     for geolocation in geolocation_objects:
         date = geolocation.date
         if date not in geolocation_dates:
@@ -439,6 +442,7 @@ def geolocations(request):
         'geolocation_lot': geolocation_lot,
         'if_section': if_section,
         'if_lot': if_lot,
+        'if_date': if_date,
     })
 
 
@@ -448,6 +452,140 @@ def geolocation(request, id):
     return render(request, 'geolocation.html', {
         'geolocation': geolocation_object,
     })
+
+
+def download_geolocation_dates_excel(request):
+    geolocation_objects = Geolocation.objects.all()
+    geolocation_dates = {}
+    geolocation_filter = request.GET.get('filter')
+    if geolocation_filter == 'date':
+        for geo in geolocation_objects:
+            date = geo.date
+            if date not in geolocation_dates:
+                geolocation_dates[date] = [geo]
+            else:
+                geolocation_dates[date].append(geo)
+
+    # Create a new Excel workbook and add a worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Add headers to the worksheet
+    for date, obj in geolocation_dates.items():
+        formatted_date = datetime.strftime(date, "%B %d, %Y")
+        ws.append([formatted_date])
+        header = ["Tree", "Status", 'Section', 'Lot', 'Latitude', 'Longitude', 'Date Time']
+        ws.append(header)
+        for geo_loc in obj:
+            formatted_date_time = datetime.strftime(geo_loc.date_time, "%B %d, %Y, %H:%M:%S")
+            data = [
+                geo_loc.tree.name,
+                geo_loc.status.name,
+                geo_loc.section.name,
+                geo_loc.lot.name,
+                geo_loc.lat,
+                geo_loc.long,
+                formatted_date_time
+            ]
+            ws.append(data)
+
+    # Create a response object with the appropriate content type for Excel files
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=geolocation_dates.xlsx'
+
+    # Save the workbook to the response object
+    wb.save(response)
+
+    return response
+
+
+def download_geolocation_section_excel(request):
+    geolocation_objects = Geolocation.objects.all()
+    geolocation_section = {}
+    geolocation_filter = request.GET.get('filter')
+    if geolocation_filter == 'section':
+        for geo in geolocation_objects:
+            section = geo.section
+            if section not in geolocation_section:
+                geolocation_section[section] = [geo]
+            else:
+                geolocation_section[section].append(geo)
+
+    # Create a new Excel workbook and add a worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Add headers to the worksheet
+    for section, obj in geolocation_section.items():
+        # formatted_date = datetime.strftime(date, "%B %d, %Y")
+        ws.append([section])
+        header = ["Tree", "Status", 'Section', 'Lot', 'Latitude', 'Longitude', 'Date Time']
+        ws.append(header)
+        for geo_loc in obj:
+            formatted_date_time = datetime.strftime(geo_loc.date_time, "%B %d, %Y, %H:%M:%S")
+            data = [
+                geo_loc.tree.name,
+                geo_loc.status.name,
+                geo_loc.section.name,
+                geo_loc.lot.name,
+                geo_loc.lat,
+                geo_loc.long,
+                formatted_date_time
+            ]
+            ws.append(data)
+
+    # Create a response object with the appropriate content type for Excel files
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=geolocation_sections.xlsx'
+
+    # Save the workbook to the response object
+    wb.save(response)
+
+    return response
+
+
+def download_geolocation_lot_excel(request):
+    geolocation_objects = Geolocation.objects.all()
+    geolocation_lot = {}
+    geolocation_filter = request.GET.get('filter')
+    if geolocation_filter == 'lot':
+        for geo in geolocation_objects:
+            lot = geo.lot
+            if lot not in geolocation_lot:
+                geolocation_lot[lot] = [geo]
+            else:
+                geolocation_lot[lot].append(geo)
+
+    # Create a new Excel workbook and add a worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Add headers to the worksheet
+    for lot, obj in geolocation_lot.items():
+        # formatted_date = datetime.strftime(date, "%B %d, %Y")
+        ws.append([lot])
+        header = ["Tree", "Status", 'Section', 'Latitude', 'Longitude', 'Date Time']
+        ws.append(header)
+        for geo_loc in obj:
+            formatted_date_time = datetime.strftime(geo_loc.date_time, "%B %d, %Y, %H:%M:%S")
+            data = [
+                geo_loc.tree.name,
+                geo_loc.status.name,
+                geo_loc.section.name,
+                geo_loc.lat,
+                geo_loc.long,
+                formatted_date_time
+            ]
+            ws.append(data)
+
+    # Create a response object with the appropriate content type for Excel files
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=geolocation_sections.xlsx'
+
+    # Save the workbook to the response object
+    wb.save(response)
+
+    return response
 
 
 @authenticated_user
@@ -1058,3 +1196,22 @@ def load_json(request):
     else:
         # If there's no referring URL, redirect to a default page
         return redirect('homepage')
+
+
+def register_device(request):
+    if request.method == 'POST':
+        device_name = request.POST.get('device_name')
+        device_uuid = request.POST.get('device_uuid')
+
+        if not RegisteringDevice.objects.filter(device_uuid=device_uuid).exists():
+            RegisteringDevice.objects.create(
+                device_name=device_name,
+                device_uuid=device_uuid,
+                is_registered=True,
+                date=timezone.now(),
+                date_time=timezone.now(),
+            )
+            return JsonResponse({'message': 'Device awaiting verification'}, status=201)
+        else:
+            return JsonResponse({'message': 'Device already on queue for verification'}, status=200)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

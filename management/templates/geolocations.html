@@ -17,9 +17,33 @@
                 <button class="geolocations-filter-btn" type="submit">Filter</button>
             </form>
         </div>
+        <div>
+            {% if if_section %}
+                <form class="geolocations-download-excel-form"
+                      action="{% url 'geolocation-section-excel' %}?filter=section">
+                    <button class="geolocation-download-excel-btn"
+                            type="submit">Download Geolocation Section
+                    </button>
+                </form>
+            {% elif if_lot %}
+                <form class="geolocations-download-excel-form"
+                      action="{% url 'geolocation-lot-excel' %}?filter=lot">
+                    <button class="geolocation-download-excel-btn"
+                            type="submit">Download Geolocation Lot
+                    </button>
+                </form>
+            {% else %}
+                <form class="geolocations-download-excel-form"
+                    action="{% url 'geolocation-date-excel' %}?filter=date">
+                    <button class="geolocation-download-excel-btn"
+                            type="submit">
+                        Download Geolocation Date
+                    </button>
+                </form>
+            {% endif %}
+        </div>
         {% if if_section %}
             {% for date, geolocations in geolocation_sections.items %}
-
                 <div class="geolocations-date-header-div">
                     {{ date }}
                 </div>
@@ -148,4 +172,5 @@
 <!--            {% endfor %}-->
 <!--        </div>-->
     </section>
+
 {% endblock %}

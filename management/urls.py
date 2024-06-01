@@ -58,5 +58,9 @@ urlpatterns = [
     # view functions
     path('edit/<str:tree>/', views.change_edit_tree_name, name='edit-tree'),
     path('load-coordinates/', views.load_json, name='load-coordinates'),
+    path('download/excel/geolocation/dates/', views.download_geolocation_dates_excel, name='geolocation-date-excel'),
+    path('download/excel/geolocation/section/', views.download_geolocation_section_excel,
+         name='geolocation-section-excel'),
+    path('download/excel/geolocation/lot/', views.download_geolocation_lot_excel, name='geolocation-lot-excel'),
     # APIS
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
